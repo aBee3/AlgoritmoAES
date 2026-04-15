@@ -1,0 +1,3 @@
+# Importar la llave
+with open("llave.txt", "r", encoding="utf-8") as archivo:
+    llave = archivo.read()
