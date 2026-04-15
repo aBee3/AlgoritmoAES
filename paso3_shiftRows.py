@@ -1,19 +1,20 @@
 def shiftRows(bloque):
-    """
-    Aplica ShiftRows a un bloque de 16 bytes
-    """
-    bloque = list(bloque)  # convertir a lista
+    bloque = list(bloque)
     
-    return [
-        # Fila 0 (sin cambio)
-        bloque[0], bloque[1], bloque[2], bloque[3],
-        
-        # Fila 1 (shift 1)
-        bloque[5], bloque[6], bloque[7], bloque[4],
-        
-        # Fila 2 (shift 2)
-        bloque[10], bloque[11], bloque[8], bloque[9],
-        
-        # Fila 3 (shift 3)
-        bloque[15], bloque[12], bloque[13], bloque[14]
-    ]
+    # Fila 2
+    fila2 = [bloque[5], bloque[6], bloque[7], bloque[4]]
+    
+    # Fila 3
+    fila3 = [bloque[10], bloque[11], bloque[8], bloque[9]]
+    
+    # Fila 4
+    fila4 = [bloque[15], bloque[12], bloque[13], bloque[14]]
+    
+    nuevo = (
+        bloque[0:4] +  # fila 1
+        fila2 +
+        fila3 +
+        fila4
+    )
+    
+    return nuevo
