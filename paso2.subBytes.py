@@ -1,2 +1,2 @@
-def function subBytes(bloque):
-    return bloque
+def subBytes(bloque):
+    return [Sbox[i] for i in bloque]
