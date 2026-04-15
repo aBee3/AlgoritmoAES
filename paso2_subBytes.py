@@ -1,4 +1,6 @@
 from sbox import SBOX
 
 def subBytes(bloque):
-    return [Sbox[i] for i in bloque]
+    for i in range(16):
+        bloque[i] = SBOX[bloque[i]]
+    return bloque
