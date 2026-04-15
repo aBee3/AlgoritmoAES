@@ -43,3 +43,15 @@ print("Bloques: ",bloques)
 print("Formato de los Bloques: ", type(bloques))
 
 # ----------------------------------------------------------
+# Procesamiento del último bloque
+# 1. Revisar si el último bloque es de 16 bytes
+# 2. Si no es de 16 bytes, agregar bytes de padding
+# 3. Si es de 16 bytes, continuar
+
+if len(bloques[-1]) < 16:
+    bloques[-1] += b'\x00' * (16 - len(bloques[-1]))
+    bytesPadding = 16 - len(bloques[-1])
+
+print("Bloques: ",bloques)
+print("El padding es de: ", bytesPadding, "bytes.")
+
