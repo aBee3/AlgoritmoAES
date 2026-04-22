@@ -1,7 +1,8 @@
-#
-# Preprocesamiento
-#
+#--------------------#
+# Preprocesamiento   #
+#--------------------#
 
+# ----------------------------------------------------------
 # Convertir el texto a bytes, en Python se manejan como listas de enteros (0-255)
 
 # Leer el texto (e.g. "Esto es un texto")
@@ -15,6 +16,8 @@ with open("llave.txt", "r", encoding="utf-8") as archivo:
 print("Texto original:", texto)
 print("Llave (hex string):", llave_hex)
 
+# ----------------------------------------------------------
+
 # Convertir el texto a bytes
 texto_bytes = list(texto.encode('utf-8'))
 
@@ -26,8 +29,10 @@ print("Llave en bytes:", llave_bytes)
 print("Longitud de la llave:", len(llave_bytes), "bytes")
 
 # ----------------------------------------------------------
+
 # Creación de Bloques 
-# Dividir en bloques de 16 bytes (e.g. [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
+# Dividir en bloques de 16 bytes 
+# (e.g. [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
 def dividirEnBloques(lista_bytes):
     bloques = []
     for i in range(0, len(lista_bytes), 16):
@@ -38,9 +43,11 @@ def dividirEnBloques(lista_bytes):
             bloque = bloque + [0] * espacios_faltantes
         bloques.append(bloque)
     return bloques
+
 # ----------------------------------------------------------
 
 # Dividir el texto en bloques
+
 bloques = dividirEnBloques(texto_bytes)
 print("Bloques:", bloques)
 print("Número de bloques:", len(bloques))
