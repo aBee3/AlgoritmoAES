@@ -4,14 +4,18 @@
 
 # Importar la llave
 from paso0_preprocesamiento import llaveEnBytes
+from sbox import Rcon
+from sbox import SBOX
 
 llaveOriginal = llaveEnBytes
+
+# KEY EXPANSION
 def keyExpansion(llaveOriginal):
-    # Se deben conseguir 11 llaves
-    llaves = []
-    llaves.append(llaveOriginal)
-    
-    # 1. Dividir en 4 subllaves, con 4 pares
+    # Se deben conseguir 11 llaves, 44 palabras
+    llaves = [None] * 44  # 44 palabras
+    llaves[0] = llaveOriginal
+
+    # 0. Dividir en 4 subllaves, con 4 pares
     # Dividimos en pares
     pares = []
     for i in range(0, len(llaveOriginal), 2):
@@ -24,23 +28,43 @@ def keyExpansion(llaveOriginal):
         palabra = pares[i:i+4]
         palabras.append(palabra)
     
+    # Palabras de la llave original
     print("Palabras: ", palabras)
 
-    # Necesitamos 4 palabras para cada ronda (11x4)
+    # Llave original + 4 nuevas palabras
+    for i in range(4):
+        llaves[i] = palabras[i]
+    
+    # Llaves iniciales
+    print("Llaves: ", llaves)
 
-    # Procesar palabras
-    rotWords = []
+    # Main loop: expandir llave
+    for i in range(4, 44):
+        llave_temp = llave[i - 1]
 
-    for palabra in palabras:
-        rw = rotWord(palabra)
-        rotWords.append(rw)
-        print("RotWord:", rw)
+        if i % 4 == 0:
+            # 1. Rotar palabra
+            llave_temp = rotWord(llave_temp) 
+            # 2. Substituir bytes
+            llave_temp = sBox(llave_temp) 
+            # 3. XOR con Rcon
+            llave_temp = xor(llave_temp, Rcon[i//4])
 
+        #llaves[i] = xor(llaves[i - 4], llave_temp)       # XOR with previous 4th word
+    
 
     # ------------------------------------------------------------
     return llaves
 
 def rotWord(palabra):
     return palabra[1:] + palabra[:1]
+
+def sBox(palabra):
+    for i in range(4):
+        palabra[i] = SBOX[palabra[i]]
+    return palabra
+
+def xor(palabra, rcon):
+    return
 
 keyExpansion(llaveOriginal)
