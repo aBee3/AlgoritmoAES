@@ -2,44 +2,47 @@
 # Preprocesamiento
 #
 
-# Importar el texto a cifrar
+# Convertir el texto a bytes, en Python se manejan como listas de enteros (0-255)
+
+# Leer el texto (e.g. "Esto es un texto")
 with open("texto.txt", "r", encoding="utf-8") as archivo:
     texto = archivo.read()
 
-# Importar la llave
+# Leer la llave (e.g. "3034a1475043f4cacf4d46a8625a53f9")
 with open("llave.txt", "r", encoding="utf-8") as archivo:
-    llave = archivo.read()
+    llave_hex = archivo.read().strip()
 
-print(texto, llave)
+print("Texto original:", texto)
+print("Llave (hex string):", llave_hex)
 
 # Convertir el texto a bytes
-def convertirABytes(texto):
-    return texto.encode('utf-8')
+texto_bytes = list(texto.encode('utf-8'))
 
-textoEnBytes = convertirABytes(texto)
-llaveEnBytes = convertirABytes(llave)
+# Convertir la llave a bytes
+llave_bytes = list(bytes.fromhex(llave_hex))
 
-print("Texto en bytes: ",textoEnBytes)
-print("Llave en bytes: ",llaveEnBytes)
-
-# Confirmar que es bytes
-print("Formato del Texto: ", type(textoEnBytes))
-print("Formato de la Llave: ", type(llaveEnBytes))
+print("Texto en bytes:", texto_bytes)
+print("Llave en bytes:", llave_bytes)
+print("Longitud de la llave:", len(llave_bytes), "bytes")
 
 # ----------------------------------------------------------
-
-# Dividir en bloques de 16 bytes
-def dividirEnBloques(texto):
+# Creación de Bloques 
+# Dividir en bloques de 16 bytes (e.g. [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
+def dividirEnBloques(lista_bytes):
     bloques = []
-    for i in range(0, len(texto), 16):
-        bloque = texto[i:i+16]
+    for i in range(0, len(lista_bytes), 16):
+        bloque = lista_bytes[i:i+16]
+        # Si el últoimo bloque < 16 bytes, rellenar con ceros
+        if len(bloque) < 16:
+            espacios_faltantes = 16 - len(bloque)
+            bloque = bloque + [0] * espacios_faltantes
         bloques.append(bloque)
     return bloques
+# ----------------------------------------------------------
 
-bloques = dividirEnBloques(textoEnBytes)
-print("Bloques: ",bloques)
-
-# Confirmar que es una lista
-print("Formato de los Bloques: ", type(bloques))
+# Dividir el texto en bloques
+bloques = dividirEnBloques(texto_bytes)
+print("Bloques:", bloques)
+print("Número de bloques:", len(bloques))
 
 # ----------------------------------------------------------
